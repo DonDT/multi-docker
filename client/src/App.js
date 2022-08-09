@@ -14,7 +14,7 @@ function App() {
             Edit <code>src/App.js</code> and save to reload.
           </p>
           <Link to={"/"}>Home</Link>
-          <Link to={"/otherpage"}>Other Page</Link>
+          <Link to={"/otherpage"}>Other Page !!</Link>
           <div>
             <Route exact path={"/"} component={Fib} />
             <Route exact path={"/otherpage"} component={OtherPage} />

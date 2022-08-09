@@ -1,0 +1,26 @@
+language: generic 
+sudo: required
+services:
+  - docker
+
+before-install:
+  - docker build -t cameroondocker/react-test -f ./client/Dockerfile.dev ./client
+  # multiple scripts
+script:
+  - docker run -e CI=true cameroondocker/react-test npm test 
+  # multiple run commands
+
+after_success: 
+# we do not specify dockerfile, it uses default
+  - docker build -t cameroondocker/multi-client ./client  
+  - docker build -t cameroondocker/multi-nginx ./nginx  
+  - docker build -t cameroondocker/multi-server ./server  
+  - docker build -t cameroondocker/multi-worker ./worker  
+# log in to docker hub
+# password is taken and echoed to after pipe
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# push images to docker hub ...
+  - docker push cameroondocker/multi-client
+  - docker push cameroondocker/multi-nginx
+  - docker push cameroondocker/multi-server
+  - docker push cameroondocker/multi-worker
